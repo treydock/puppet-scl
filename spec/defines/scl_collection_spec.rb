@@ -20,6 +20,25 @@ describe 'scl::collection' do
   end
   
   context "custom collection" do
-    let(:title) { "ImageMagick"}
+    let(:title) { "scl_ImageMagick67" }
+
+    let(:params) do
+      {
+        :repo_descr           => 'scl_ImageMagick67',
+        :repo_baseurl         => 'http://foo.example.com/scl_ImageMagick67/',
+        :repo_enabled         => "1",
+        :repo_gpgcheck        => "0",
+      }
+    end
+
+    it do
+      should contain_yumrepo('scl_ImageMagick67').with({
+        'descr'          => 'scl_ImageMagick67',
+        'baseurl'        => 'http://foo.example.com/scl_ImageMagick67/',
+        'failovermethod' => nil,
+        'enabled'        => '1',
+        'gpgcheck'       => '0',
+      })
+    end
   end
 end

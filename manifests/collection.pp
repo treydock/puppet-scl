@@ -48,9 +48,15 @@ define scl::collection (
 
   if member($collection_names, $name) {
     $collection_info = $collections[$name]
-  } #else {
-#    fail("Unsupported collection name: ${name}.")
-#  }
+  } else {
+    $collection_info = {
+      'repo_descr'          => undef,
+      'repo_baseurl'        => undef,
+      'repo_failovermethod' => undef,
+      'repo_enabled'        => undef,
+      'repo_gpgcheck'       => undef,
+    }
+  }
 
   $repo_descr_real = $repo_descr ? {
     'UNSET' => $collection_info['repo_descr'],
