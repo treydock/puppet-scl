@@ -1,4 +1,4 @@
-# == Class: scl::php55
+# == Class: scl::httpd24
 #
 # === Authors
 #
@@ -8,7 +8,7 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-class scl::php55 (
+class scl::httpd24 (
   $repo_name            = 'UNSET',
   $repo_descr           = 'UNSET',
   $repo_baseurl         = 'UNSET',
@@ -17,9 +17,7 @@ class scl::php55 (
   $repo_gpgcheck        = 'UNSET'
 ) inherits scl::params {
 
-  require 'scl::httpd24'
-
-  scl::collection { 'php55':
+  scl::collection { 'httpd24':
     repo_name           => $repo_name,
     repo_descr          => $repo_descr,
     repo_baseurl        => $repo_baseurl,

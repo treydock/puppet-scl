@@ -1,29 +1,16 @@
 # == Class: scl
 #
-# Full description of class scl here.
+# Installs the SCL utilities
 #
 # === Parameters
 #
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if it
-#   has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should not be used in preference to class parameters  as of
-#   Puppet 2.6.)
+# [*package_name*]
+#   String.  Name of scl-utils package
+#   Default: 'scl-utils'
 #
 # === Examples
 #
-#  class { scl: }
+#  class { 'scl': }
 #
 # === Authors
 #
@@ -34,7 +21,7 @@
 # Copyright 2013 Trey Dockendorf
 #
 class scl (
-$package_name         = $scl::params::package_name
+  $package_name = $scl::params::package_name
 ) inherits scl::params {
 
   package { 'scl-utils':

@@ -7,6 +7,7 @@ describe 'scl::php55' do
 
   it { should create_class('scl::php55') }
   it { should contain_class('scl::params') }
+  it { should include_class('scl::httpd24') }
 
   context "scl::collection" do
     it do

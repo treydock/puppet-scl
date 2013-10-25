@@ -1,10 +1,9 @@
 require 'spec_helper_system'
 
-describe 'scl::php55 class:' do
+describe 'scl::build class:' do
   context 'should run successfully' do
     pp =<<-EOS
-class { 'scl::php55': }
-package { 'php55-php': ensure => installed, require => Yumrepo['php55'] }
+class { 'scl::build': }
     EOS
   
     context puppet_apply(pp) do
@@ -14,14 +13,5 @@ package { 'php55-php': ensure => installed, require => Yumrepo['php55'] }
        its(:stderr) { should be_empty }
        its(:exit_code) { should be_zero }
     end
-  end
-
-  describe yumrepo('php55') do
-    it { should exist }
-    it { should be_enabled }
-  end
-
-  describe package('php55-php') do
-    it { should be_installed }
   end
 end

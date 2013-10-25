@@ -5,8 +5,8 @@ describe 'scl::collection' do
 
   let(:facts) { default_facts }
 
-  context "scl_ruby193" do
-    let(:title) { "scl_ruby193" }
+  context "ruby193" do
+    let(:title) { "ruby193" }
 
     it do
       should contain_yumrepo('scl_ruby193').with({

@@ -1,29 +1,28 @@
 # == Define: scl::collection
 #
-# Full description of class scl here.
+# Defines a SCL collection.
+#
+# Builtin collections have their defaults defined by $scl::params::collections
 #
 # === Parameters
 #
-# Document parameters here.
+# [*repo_name*]
+#   String.  yumrepo name  attribute
 #
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+# [*repo_descr*]
+#   String.  yumrepo descr attribute
 #
-# === Variables
+# [*repo_baseurl*]
+#   String.  yumrepo baseurl attribute
 #
-# Here you should define a list of variables that this module would require.
+# [*repo_failovermethod*]
+#   String.  yumrepo failovermethod attribute
 #
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if it
-#   has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should not be used in preference to class parameters  as of
-#   Puppet 2.6.)
+# [*repo_enabled*]
+#   String.  yumrepo enabled attribute
 #
-# === Examples
-#
-#  class { scl: }
+# [*repo_gpgcheck*]
+#   String.  yumrepo gpgcheck attribute
 #
 # === Authors
 #
@@ -34,6 +33,7 @@
 # Copyright 2013 Trey Dockendorf
 #
 define scl::collection (
+  $repo_name            = 'UNSET',
   $repo_descr           = 'UNSET',
   $repo_baseurl         = 'UNSET',
   $repo_failovermethod  = 'UNSET',
@@ -50,14 +50,26 @@ define scl::collection (
     $collection_info = $collections[$name]
   } else {
     $collection_info = {
+      'repo_name'           => $name,
       'repo_descr'          => undef,
       'repo_baseurl'        => undef,
       'repo_failovermethod' => undef,
       'repo_enabled'        => undef,
       'repo_gpgcheck'       => undef,
+      'min_os_release_ver'  => undef,
     }
   }
 
+  $min_os_release_ver = $collection_info['min_os_release_ver']
+
+  if $min_os_release_ver and versioncmp("${::operatingsystemrelease}", $min_os_release_ver) < 0 {
+    fail("Unsupported operatingsystemrelease: ${::operatingsystemrelease}, scl collection ${name} only supports operatingsystemrelease >= ${min_os_release_ver}")
+  }
+
+  $repo_name_real = $repo_name ? {
+    'UNSET' => $collection_info['repo_name'],
+    default => $repo_name,
+  }
   $repo_descr_real = $repo_descr ? {
     'UNSET' => $collection_info['repo_descr'],
     default => $repo_descr,
@@ -79,7 +91,7 @@ define scl::collection (
     default => $repo_gpgcheck,
   }
 
-  yumrepo { $name:
+  yumrepo { $repo_name_real:
     descr           => $repo_descr_real,
     baseurl         => $repo_baseurl_real,
     failovermethod  => $repo_failovermethod_real,
